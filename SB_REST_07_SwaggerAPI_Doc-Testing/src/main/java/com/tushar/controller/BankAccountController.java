@@ -31,7 +31,7 @@ public class BankAccountController {
 	@ApiOperation("For Account Opening")
 	public ResponseEntity<Accounts_res> createNewAccount(@RequestBody T_Bank_Accounts account) throws Exception {
 		System.out.println("BankAccountController.createNewAccount():: " + account);
-		return new ResponseEntity(serviceBankAccount.createOrUpdateAccount(account), HttpStatus.CREATED);
+		return new ResponseEntity(serviceBankAccount.createOrUpdateAccount(account, "I"), HttpStatus.CREATED);
 	}// createNewAccount
 
 	
@@ -39,6 +39,12 @@ public class BankAccountController {
 	public ResponseEntity<Accounts_res> getAccountDetails(@PathVariable("accId") Integer accNo) throws Exception {
 		System.out.println("BankAccountController.getAccountDetails(): " + accNo);
 		return new ResponseEntity(serviceBankAccount.getAccountDetails(accNo), HttpStatus.OK);
+	}// getAccountDetails
+	
+	@GetMapping("/findAll")
+	public ResponseEntity<Accounts_res> getAllAccountDetails() throws Exception {
+		System.out.println("BankAccountController.getAllAccountDetails()" );
+		return new ResponseEntity(serviceBankAccount.getAllAccountDetails(), HttpStatus.OK);
 	}// getAccountDetails
 
 	
@@ -56,6 +62,11 @@ public class BankAccountController {
 		System.out.println("BankAccountController.balanceTransfer(): " + accNo);
 		return new ResponseEntity(serviceBankAccount.deleteAccount(accNo), HttpStatus.OK);
 	}// closedAccount
-
+	
+	@PutMapping("/update")
+	public ResponseEntity<Accounts_res> updateAccount(@RequestBody T_Bank_Accounts account) throws Exception {
+			System.out.println("BankAccountController.updateAccount():: " + account);
+			return new ResponseEntity(serviceBankAccount.createOrUpdateAccount(account, "U"), HttpStatus.CREATED);
+		}//updateAccount
 	
 }// class

@@ -19,16 +19,20 @@ public class BankAccountServiceImpl implements iBankAccountService {
 	private iBankAccountRepo repoBankAccount;
 	
 	@Override
-	public Accounts_res createOrUpdateAccount(T_Bank_Accounts account) throws BankAccountException {
+	public Accounts_res createOrUpdateAccount(T_Bank_Accounts account, String opsType) throws BankAccountException {
 		System.out.println("BankAccountServiceImpl.createOrUpdateAccount():: "+account);
 		Accounts_res accRes = null;
+		String sucessMsg="Create" ;
+		if("U".equalsIgnoreCase(opsType)) {
+			sucessMsg="Update";
+		}
 		try {
 			T_Bank_Accounts acc = repoBankAccount.save(account);
-			accRes = new Accounts_res("success", "Account Created", LocalDateTime.now());
-			accRes.setAccount(acc);
+			accRes = new Accounts_res("success", "Account "+sucessMsg+"d successfully", LocalDateTime.now());
+			accRes.setAccounts(List.of(acc));
 			System.out.println(accRes);
 		} catch (Exception e) {
-			throw new BankAccountException( "Failed to create account");
+			throw new BankAccountException( "Failed to "+sucessMsg+" account");
 		}
 		return accRes;
 	}//createOrUpdateAccount
@@ -80,7 +84,7 @@ public class BankAccountServiceImpl implements iBankAccountService {
 			accountSrc.setBalance(accountSrc.getBalance()- amt);
 			List<T_Bank_Accounts > accounts = List.of(accountDest, accountSrc);
 			repoBankAccount.saveAll(accounts);
-			accRes = new Accounts_res("success", "Money transfer successful", LocalDateTime.now(), accountDest);
+			accRes = new Accounts_res("success", "Money transfer successful", LocalDateTime.now(), List.of( accountDest));
 			return accRes;
 			}else {
 				throw new BankAccountException( "Source account: Insufficient Balnace to deduct");
@@ -96,11 +100,19 @@ public class BankAccountServiceImpl implements iBankAccountService {
 		Accounts_res accRes=null;
 		Optional<T_Bank_Accounts> accountOpt = repoBankAccount.findById(accNo);
 		if(accountOpt.isPresent()) {
-			accRes = new Accounts_res("success", "Account Found", LocalDateTime.now(), accountOpt.get());
+			accRes = new Accounts_res("success", "Account Found", LocalDateTime.now(), List.of( accountOpt.get()));
 			return accRes ;
 		}
 		else 
 		throw new BankAccountException( accNo+" :Account not Found");
 	}//getAccountDetails
+
+	@Override
+	public Accounts_res getAllAccountDetails() throws BankAccountException {
+		Accounts_res accRes=null;
+		List<T_Bank_Accounts> accounts =repoBankAccount.findAll();
+		accRes = new Accounts_res("success", "Accounts Found", LocalDateTime.now(),accounts );
+		return accRes ;
+	}
 
 }//class

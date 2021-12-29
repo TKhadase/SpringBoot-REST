@@ -2,6 +2,7 @@ package com.tushar.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,6 @@ public class Accounts_res  implements Serializable{
 	@NonNull
 	private LocalDateTime time;
 
-	private T_Bank_Accounts account;
+	private List<T_Bank_Accounts> accounts;
 	
 }
