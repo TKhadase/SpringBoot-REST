@@ -28,7 +28,7 @@ public class BankAccountServiceImpl implements iBankAccountService {
 		}
 		try {
 			T_Bank_Accounts acc = repoBankAccount.save(account);
-			accRes = new Accounts_res("success", "Account :"+acc.getAccno()+", "+sucessMsg+"d successfully.", LocalDateTime.now());
+			accRes = new Accounts_res("success", "Account :"+acc.getAccno()+", "+sucessMsg+"d successfully !", LocalDateTime.now());
 			accRes.setAccounts(List.of(acc));
 			System.out.println(accRes);
 		} catch (Exception e) {
